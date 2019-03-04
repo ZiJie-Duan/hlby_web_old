@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}home{% endblock %}
+
+{% block page_content %}
+
+<div class="page-header">
+
+	{%if ztm == "s"%}
+		<h1>login</h1>
+		<br/>
+		{{ wtf.quick_form(form) }}
+	{%endif%}
+
+    {%if ztm == "t"%}
+    	<!DOCTYPE HTML>
+        <html>
+        <head>
+        <title>Home</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="static/assets/css/main.css" />
+        </head>
+        <body>
+
+        <!-- Header -->
+        <header id="header" class="alt">
+            <div class="inner">
+                <h1>Haileybury</h1>
+                <p>A interior photogragh wall</p>
+            </div>
+        </header>
+
+        <!-- Wrapper -->
+        <div id="wrapper">
+
+
+        <div class="tlinks">Collect from <a href="http://www.cssmoban.com/" >手机网站模板</a></div>
+            <!-- Items -->
+                <section class="main items">
+                    <article class="item">
+                        <header>
+                            <a href="#"><img src="static/images/pic01.jpg" alt="" /></a>
+                            <h3>Feugiat et faucibus</h3>
+                        </header>
+                        <p>Fusce malesuada efficitur venenatis. Pellentesque tempor leo sed massa hendrerit hendrerit. In sed feugiat est, eu congue elit. Ut porta magna vel felis sodales vulputate. Donec faucibus dapibus lacus non ornare.</p>
+                        <ul class="actions">
+                            <li><a href="#" class="button">More</a></li>
+                        </ul>
+                    </article>
+                    <article class="item">
+                        <header>
+                            <a href="#"><img src="static/images/pic02.jpg" alt="" /></a>
+                            <h3>Blandit adipiscing</h3>
+                        </header>
+                        <p>Fusce malesuada efficitur venenatis. Pellentesque tempor leo sed massa hendrerit hendrerit. In sed feugiat est, eu congue elit. Ut porta magna vel felis sodales vulputate. Donec faucibus dapibus lacus non ornare.</p>
+                        <ul class="actions">
+                            <li><a href="#" class="button">More</a></li>
+                        </ul>
+                    </article>
+                    <article class="item">
+                        <header>
+                            <a href="#"><img src="static/images/pic03.jpg" alt="" /></a>
+                            <h3>Lorem massa nulla</h3>
+                        </header>
+                        <p>Fusce malesuada efficitur venenatis. Pellentesque tempor leo sed massa hendrerit hendrerit. In sed feugiat est, eu congue elit. Ut porta magna vel felis sodales vulputate. Donec faucibus dapibus lacus non ornare.</p>
+                        <ul class="actions">
+                            <li><a href="#" class="button">More</a></li>
+                        </ul>
+                    </article>
+                    <article class="item">
+                        <header>
+                            <a href="#"><img src="static/images/pic04.jpg" alt="" /></a>
+                            <h3>Ipsum sed tempus</h3>
+                        </header>
+                        <p>Fusce malesuada efficitur venenatis. Pellentesque tempor leo sed massa hendrerit hendrerit. In sed feugiat est, eu congue elit. Ut porta magna vel felis sodales vulputate. Donec faucibus dapibus lacus non ornare.</p>
+                        <ul class="actions">
+                            <li><a href="#" class="button">More</a></li>
+                        </ul>
+                    </article>
+                </section>
+
+            <!-- Main -->
+
+        </div>
+
+        <!-- Scripts -->
+        <script src="static/assets/js/jquery.min.js"></script>
+        <script src="static/assets/js/skel.min.js"></script>
+        <script src="static/assets/js/util.js"></script>
+        <script src="static/assets/js/main.js"></script>
+
+        </body>
+        </html>
+	{%endif%}
+
+    {%if ztm == "f"%}
+    	<h1>login</h1>
+    	<br/>
+    	<p>Sorry! Your username or password is wrong!</p>
+    	{{ wtf.quick_form(form) }}
+    {%endif%}
+
+
+</div>
+
+{% endblock %}
+
+
+
+
+
