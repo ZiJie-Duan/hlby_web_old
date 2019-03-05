@@ -30,9 +30,10 @@ class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(64), unique=True)
 	users = db.relationship('Pas', backref='username')
-
+	password = db.Column(db.String(64), unique=True)
+	
 	def __repr__(self):
-		return '<Role %r>' % self.username
+		return '%r' % self.username
 
 
 class Pas(db.Model):
@@ -42,7 +43,41 @@ class Pas(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 	def __repr__(self):
-		return '<User %r>' % self.password
+		return '%r' % self.password
+
+#=======================
+
+class Act(db.Model):
+	__tablename__ = 'activity'
+	id = db.Column(db.Integer, primary_key=True)
+	activity = db.Column(db.String(64), unique=True)
+	#图像反向
+	photo = db.relationship('Photo', backref='act')
+
+	strs = db.relationship('Describe', backref='act')
+
+	def __repr__(self):
+		return '%r' % self.activity
+
+class Photo(db.Model):
+	__tablename__ = 'photo'
+	id = db.Column(db.Integer, primary_key=True)
+	photo_name = db.Column(db.String(64), unique=True, index=True)
+	act_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+
+	def __repr__(self):
+		return '%r' % self.photo_name
+
+class Describe(db.Model):
+	__tablename__ = 'describe'
+	id = db.Column(db.Integer, primary_key=True)
+	describe = db.Column(db.String(1024), unique=True, index=True)
+	act_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
+
+	def __repr__(self):
+		return '%r' % self.describe
+
+
 '''
 with open("test.json") as zx:
 	tssss = json.load(zx)
