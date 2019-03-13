@@ -32,7 +32,6 @@ moment = Moment(app)
 db = SQLAlchemy(app)
 
 
-
 #数据库---------模型声明----------
 
 		   #导入登陆模块
@@ -49,29 +48,30 @@ class Users(UserMixin,db.Model):
 
 class Act(db.Model):
     #用于保存活动的模型
-    __tablename__ = 'act'
+    __tablename__ = 'acts'
     #设置id表头
     id = db.Column(db.Integer, primary_key = True)
-    activity = db.Column(db.String(64), unique=True, index=True)
-    describe = db.Column(db.Text)
+    activity = db.Column(db.String(64), index=True)
+    hphoto = db.Column(db.String(64))
+    describe = db.Column(db.String(64))
     #设定返回
-    pname = db.relationship('Potx', backref='role')
+    photx = db.relationship('Potx', backref='role')
     #返回函数
     def __repr__(self):
-        return "%r" % self.password
+        return "%r" % self.activity
 
 class Potx(db.Model):
     #用于保存照片的模型
-    __tablename__ = 'photx'
+    __tablename__ = 'potxs'
     #设置id表头
     id = db.Column(db.Integer, primary_key = True)
     photoname = db.Column(db.String(64), unique=True, index=True)
-    describe = db.Column(db.Text)
+    describe = db.Column(db.String(64))
     #设定外键（有可能这个注释是错误的）
-    act_id = db.Column(db.Integer, db.ForeignKey('act.id'))
+    act_id = db.Column(db.Integer, db.ForeignKey('acts.id'))
     #返回函数
     def __repr__(self):
-        return "%r" % self.password
+        return "%r" % self.photoname
 
 #数据库---------模型声明----------
 
@@ -157,7 +157,8 @@ def logout():
 def photo():
     act_list = Act.query.all()
     
-    return render_template('photo.html')
+
+    return render_template('photo.html',plist = ["static/mainmb/images/pic01.jpg","static/mainmb/images/pic02.jpg"])
 
 @app.route('/act/<v>')
 @login_required

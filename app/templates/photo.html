@@ -1,11 +1,67 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Home</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="static/mainmb/assets/css/main.css" />
+</head>
+<body>
 
-{% block title %}Flasky{% endblock %}
+<!-- Header -->
+<header id="header" class="alt">
+	<div class="inner">
+		<h1>Haileybury</h1>
+		<p>A interior photogragh wall</p>
+	</div>
+</header>
 
-{% block page_content %}
-<div class="page-header">
-    <h1>hahahahahha</h1>
+<!-- Wrapper -->
+<div id="wrapper">
+
+	<!-- Banner -->
+		<section id="intro" class="main">
+			<span class="icon fa-diamond major"></span>
+			<h2>Magna porta maximus</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae<br />
+			malesuada turpis. Nam pellentesque in ac aliquam. Aliquam tempor<br />
+			mi porta egestas maximus lorem ipsum dolor.</p>
+			<ul class="actions">
+				<li><a href="#" class="button big">Learn More</a></li>
+			</ul>
+		</section>
+<div class="tlinks">Collect from <a href="http://www.cssmoban.com/" >手机网站模板</a></div>
+	<!-- Items -->
+		<section class="main items">
+
+<!-- aaaaa========================== -->
+			{%for x in plist%}
+
+				<article class="item">
+					<header>
+						<a href="#"><img src="{{x}}" alt="" /></a>
+						<h3>Feugiat et faucibus</h3>
+					</header>
+					<p>hhehheheehehheh</p>
+					<ul class="actions">
+						<li><a href="/" class="button">More</a></li>
+					</ul>
+				</article>
+
+			{%endfor%}
+<!-- aaaaa========================== -->
+
+		</section>
+
+	<!-- Main -->
+
 </div>
 
-{% endblock %}
+<!-- Scripts -->
+<script src="static/mainmb/assets/js/jquery.min.js"></script>
+<script src="static/mainmb/assets/js/skel.min.js"></script>
+<script src="static/mainmb/assets/js/util.js"></script>
+<script src="static/mainmb/assets/js/main.js"></script>
+
+</body>
+</html>
