@@ -59,7 +59,7 @@ class Act(db.Model):
     photx = db.relationship('Potx', backref='role')
     #返回函数
     def __repr__(self):
-        return "%r*%r*%r" % (self.activity, self.hphoto, self.describe, self.file_wjj)
+        return "%r*%r*%r*%r" % (self.activity, self.hphoto, self.describe, self.file_wjj)
 
 class Potx(db.Model):
     #用于保存照片的模型
@@ -156,17 +156,34 @@ def logout():
 @app.route('/photo')
 @login_required
 def photo():
+    #活动目录界面函数
+    cs_list = Act.query.all()
 
-    act_list = Act.query.get(1)
-    aa = act_list[0]
-    ab = str(aa)
-    ac = ab.split("*")
-    zz = []
-    for x in ac:
-        zz.append(x.split("\'"))
-    
+    z_list = []
 
-    return render_template('photo.html',plist = ["static/mainmb/images/pic01.jpg","static/mainmb/images/pic02.jpg"])
+    for x in cs_list:
+
+        a = str(x)
+        b = a.split("*")
+        wcl_list = []
+
+        for y in b :
+            c = y.strip('\'')
+
+            wcl_list.append(c)
+
+        z_list.append(wcl_list)
+
+    jsjs = 0
+    for x in z_list:
+
+        lj = "/static/img/" + x[3] + "/" + x[1]
+        z_list[jsjs][1] = lj
+        jsjs += 1
+
+
+
+    return render_template('photo.html',plist = z_list)
 
 @app.route('/act/<v>')
 @login_required

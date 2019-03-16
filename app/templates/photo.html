@@ -35,16 +35,17 @@
 		<section class="main items">
 
 <!-- aaaaa========================== -->
-			{%for x in plist%}
+
+			{%for pms,name,ms,file_name in plist%}
 
 				<article class="item">
 					<header>
-						<a href="#"><img src="{{x}}" alt="" /></a>
-						<h3>Feugiat et faucibus</h3>
+						<a href="#"><img src="{{name}}" alt="" /></a>
+						<h3>{{pms}}</h3>
 					</header>
-					<p>{{ms}</p>
+					<p>{{ms}}</p>
 					<ul class="actions">
-						<li><a href="/" class="button">More</a></li>
+						<li><a href="/act/{{file_name}}" class="button">More</a></li>
 					</ul>
 				</article>
 

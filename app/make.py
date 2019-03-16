@@ -57,7 +57,7 @@ class Act(db.Model):
     photx = db.relationship('Potx', backref='role')
     #返回函数
     def __repr__(self):
-        return "%r*%r*%r" % (self.activity, self.hphoto, self.describe)
+        return "%r*%r*%r*%r" % (self.activity, self.hphoto, self.describe, self.file_wjj)
 
 class Potx(db.Model):
     #用于保存照片的模型
@@ -77,7 +77,7 @@ db.create_all()
 a = Users(username = "guest",password = "asdfgh123456")
 b = Users(username = "sosomu",password = "123456")
 c = Act(activity = "第一次校会",hphoto="1.jpg",file_wjj = "a",describe="这是我们第一次校会哈哈哈哈哈")
-g = Act(activity = "第二次校会",hphoto="5.jpg",file_wjj = "a",describe="这是我们第er次校会哈哈哈哈哈")
+g = Act(activity = "第二次校会",hphoto="5.jpg",file_wjj = "b",describe="这是我们第er次校会哈哈哈哈哈")
 d = Potx(photoname = "2.jpg",describe="这也不知道是啥",role = c)
 e = Potx(photoname = "3.jpg",describe="这也不知道是啥",role = c)
 f = Potx(photoname = "4.jpg",describe="这也不知道是啥",role = c)
