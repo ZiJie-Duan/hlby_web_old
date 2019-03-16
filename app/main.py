@@ -53,12 +53,13 @@ class Act(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     activity = db.Column(db.String(64), index=True)
     hphoto = db.Column(db.String(64))
-    describe = db.Column(db.String(64))
+    describe = db.Column(db.Text)
+    file_wjj = db.Column(db.String(64))
     #设定返回
     photx = db.relationship('Potx', backref='role')
     #返回函数
     def __repr__(self):
-        return "%r" % self.activity
+        return "%r*%r*%r" % (self.activity, self.hphoto, self.describe)
 
 class Potx(db.Model):
     #用于保存照片的模型
@@ -66,12 +67,12 @@ class Potx(db.Model):
     #设置id表头
     id = db.Column(db.Integer, primary_key = True)
     photoname = db.Column(db.String(64), unique=True, index=True)
-    describe = db.Column(db.String(64))
+    describe = db.Column(db.Text)
     #设定外键（有可能这个注释是错误的）
     act_id = db.Column(db.Integer, db.ForeignKey('acts.id'))
     #返回函数
     def __repr__(self):
-        return "%r" % self.photoname
+        return "%r*%r" % (self.photoname, self.describe)
 
 #数据库---------模型声明----------
 
@@ -155,7 +156,14 @@ def logout():
 @app.route('/photo')
 @login_required
 def photo():
-    act_list = Act.query.all()
+
+    act_list = Act.query.get(1)
+    aa = act_list[0]
+    ab = str(aa)
+    ac = ab.split("*")
+    zz = []
+    for x in ac:
+        zz.append(x.split("\'"))
     
 
     return render_template('photo.html',plist = ["static/mainmb/images/pic01.jpg","static/mainmb/images/pic02.jpg"])
