@@ -187,8 +187,33 @@ def photo():
 
 @app.route('/act/<v>')
 @login_required
-def photoson():
-    return render_template('photoson.html')
+def photoson(v):
+    a = Act.query.filter_by(file_wjj=v).first()
+    b = Potx.query.filter_by(role=a).all()
+
+    z_list = []
+
+    for x in b:
+
+        a = str(x)
+        b = a.split("*")
+        wcl_list = []
+
+        for y in b :
+            c = y.strip('\'')
+
+            wcl_list.append(c)
+
+        z_list.append(wcl_list)
+
+    jsjs = 0
+    for x in z_list:
+
+        lj = "/static/img/" + v + "/" + x[0]
+        z_list[jsjs][0] = lj
+        jsjs += 1
+
+    return render_template('photoson.html',lista = z_list)
 
 
 if __name__ == '__main__':
