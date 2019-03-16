@@ -59,7 +59,7 @@ class Act(db.Model):
     photx = db.relationship('Potx', backref='role')
     #返回函数
     def __repr__(self):
-        return "%r*%r*%r" % (self.activity, self.hphoto, self.describe)
+        return "%r*%r*%r" % (self.activity, self.hphoto, self.describe, self.file_wjj)
 
 class Potx(db.Model):
     #用于保存照片的模型
