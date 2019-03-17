@@ -9,7 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required
 from flask_login import logout_user, login_user
 
-
 #初始化登陆
 login_manager = LoginManager()
 #初始化路径
@@ -30,6 +29,7 @@ app.config['SECRET_KEY']='23432434ghj'
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 db = SQLAlchemy(app)
+
 
 
 #数据库---------模型声明----------
@@ -182,8 +182,8 @@ def photo():
         jsjs += 1
 
 
-
     return render_template('photo.html',plist = z_list)
+
 
 @app.route('/act/<v>')
 @login_required
@@ -214,6 +214,7 @@ def photoson(v):
         jsjs += 1
 
     return render_template('photoson.html',lista = z_list)
+
 
 
 if __name__ == '__main__':
