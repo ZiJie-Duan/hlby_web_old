@@ -7,6 +7,7 @@ import requests
 def getfilenamelist():
 	print("正在生成图片名称列表")
 	lj = os.getcwd()
+	newname_list = []
 	name_list = []
 
 	for root, dirs, files in os.walk(lj):
@@ -22,12 +23,15 @@ def getfilenamelist():
 			a = lj + "\\" + x
 			listzc1.append(a)
 
-			b = lj + "\\" +str(uuid.uuid4()) + ".jpg"
+			uid = str(uuid.uuid4())
+			b = lj + "\\" + uid + ".jpg"
 			listzc1.append(b)
+			newname_list.append(uid)
 
 			rename_list.append(listzc1)
 			listzc1 = []
-	return rename_list
+
+	return rename_list, newname_list
 
 
 def renamefile(lista):
@@ -44,61 +48,46 @@ def renamefile(lista):
 def changejpgexif(listb):
 	print("开始移除照片其他信息")
 	for x in listb:
+		try:
+			zc = 1
 
-		zc = 1
+			exif_dict = piexif.load(x)
 
-		exif_dict = piexif.load(x)
+			if exif_dict is not None:
+				print("已检测照片属性")
+				if exif_dict["0th"][274] == 3:
+					zc = 3
+					print("照片旋转参数为3")
 
-		if exif_dict is not None:
-			print("已检测照片属性")
-			if exif_dict["0th"][274] == 3:
-				zc = 3
-				print("照片旋转参数为3")
+				if exif_dict["0th"][274] == 6:
+					zc = 6
+					print("照片旋转参数为6")
 
-			if exif_dict["0th"][274] == 6:
-				zc = 6
-				print("照片旋转参数为6")
+				if exif_dict["0th"][274] == 8:
+					zc = 8
+					print("照片旋转参数为8")
 
-			if exif_dict["0th"][274] == 8:
-				zc = 8
-				print("照片旋转参数为8")
+				im = Image.open(x)
 
-			im = Image.open(x)
+				exif_dict["0th"][274] = 1
 
-			exif_dict["0th"][274] = 1
+				bit = piexif.dump(exif_dict)
 
-			bit = piexif.dump(exif_dict)
+				if zc == 3:
+					im = im.transpose(Image.ROTATE_180)
 
-			if zc == 3:
-				im = im.transpose(Image.ROTATE_180)
+				if zc == 6:
+					im = im.transpose(Image.ROTATE_270)
 
-			if zc == 6:
-				im = im.transpose(Image.ROTATE_270)
+				if zc == 8:
+					im = im.transpose(Image.ROTATE_90)
 
-			if zc == 8:
-				im = im.transpose(Image.ROTATE_90)
-
-			im.save(x, exif=bit,quality=95)
-		else:
+				im.save(x, exif=bit,quality=95)
+		except:
 			print("图片未检测到附加属性")
 
-
-def update_jpgx(listc):
-	files = {}
-	cs = 0
-	for x in listc:
-		cs += 1
-		url = "http://127.0.0.1:5000/"
-		newname = x.split('\\')
-		s = newname[len(newname)-1]
-
-		files["file" + str(1)] = (s,open(x,'rb'),'image/jpg')
-		#files = {'file':(s,open(r"C:\Users\lucycore\Desktop\IMG_0810.JPG",'rb'),'image/jpg')}
-
-	r = requests.post(url,files = files)
-	result = r.text
-	print(result)
-
+		else:
+			print("图片未检测到附加属性")
 
 
 def update_jpg(listc):
@@ -116,11 +105,29 @@ def update_jpg(listc):
 		print(result)
 
 
-a = getfilenamelist()
-b = renamefile(a)
-changejpgexif(b)
-update_jpg(b)
+def apiput():
 
+	actname = "骚哥生日"
+	actms = "骚哥过生日，我们一起度过快乐的一天！"
+	actfil = "sybri"
+
+	a, wnl = getfilenamelist()
+	b = renamefile(a)
+	changejpgexif(b)
+
+	wnln = "#".join(wnl)
+
+	hostsend = "http://127.0.0.1:5000/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
+
+
+	response = requests.get(hostsend)
+
+
+	update_jpg(b)
+
+
+
+apiput()
 
 input()
 #os.rename()

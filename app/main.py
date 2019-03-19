@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, session, redirect, url_for, flash
+from flask import Flask, render_template, session, redirect, url_for, flash,request
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
@@ -17,6 +17,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 #初始化数据库设置
 app.config['SECRET_KEY'] = 'hard to guess string'
+app.config['JSON_AS_ASCII'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -216,6 +217,51 @@ def photoson(v):
     return render_template('photoson.html',lista = z_list)
 
 
+
+@app.route("/api/upload/", methods=['POST'])
+def upjpg():
+
+    start_time = time.time()
+    upload_file = request.files['file']
+    old_file_name = upload_file.filename
+    if upload_file:
+        file_path = os.path.join("C:\\Users\\lucycore\\Desktop\\tests\\server\\" + g.zczc, old_file_name)
+        upload_file.save(file_path)
+        print("success")
+        print('file saved to %s' % file_path)
+        duration = time.time() - start_time
+        print('duration:[%.0fms]' % (duration*1000))
+        return '发送完成'
+    else:
+        return '发送失败'
+
+
+
+@app.route('/api/',methods=['POST','GET'])
+def apidk():
+    text=request.args.get('config')
+    if text is not None:
+        a = str(text)
+        b = a.split("*")
+        actname = b[0]
+        actms = b[1]
+        actfile = b[2]
+        photonamew = b[3]
+
+        aa = Act(activity=actname,describe=actms,file_wjj=actfile,hphoto=photonamew[0])
+
+        db.session.add(aa)
+
+        for x in photonamew:
+            ab = Potx(photoname=x,describe="无描述",role=aa)
+
+            db.session.add(ab)
+
+        db.session.commit()
+        g.zczc = b[2]
+
+    os.makedirs("C:\\Users\\lucycore\\Desktop\\server\\" + b)
+    return "hello" + text
 
 if __name__ == '__main__':
     app.run(debug = True)
