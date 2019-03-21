@@ -26,7 +26,8 @@ def getfilenamelist():
 			uid = str(uuid.uuid4())
 			b = lj + "\\" + uid + ".jpg"
 			listzc1.append(b)
-			newname_list.append(uid)
+			uidx = uid + ".jpg"
+			newname_list.append(uidx)
 
 			rename_list.append(listzc1)
 			listzc1 = []
@@ -93,7 +94,7 @@ def changejpgexif(listb):
 def update_jpg(listc):
 
 	for x in listc:
-		url = "http://127.0.0.1:5000/"
+		url = "http://127.0.0.1:5000/api/upload/"
 		newname = x.split('\\')
 		s = newname[len(newname)-1]
 
@@ -107,20 +108,20 @@ def update_jpg(listc):
 
 def apiput():
 
-	actname = "骚哥生日"
-	actms = "骚哥过生日，我们一起度过快乐的一天！"
-	actfil = "sybri"
+	actname = input("活动名称：")
+	actms = input("活动描述：")
+	actfil = input("活动文件夹：")
 
 	a, wnl = getfilenamelist()
 	b = renamefile(a)
 	changejpgexif(b)
 
-	wnln = "#".join(wnl)
+	wnln = "!".join(wnl)
 
 	hostsend = "http://127.0.0.1:5000/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
 
 
-	response = requests.get(hostsend)
+	response = requests.post(hostsend)
 
 
 	update_jpg(b)

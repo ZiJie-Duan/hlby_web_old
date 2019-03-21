@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, session, redirect, url_for, flash,request
+from flask import Flask, render_template, session, redirect, url_for, flash,request, g
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
@@ -67,7 +67,7 @@ class Potx(db.Model):
     __tablename__ = 'potxs'
     #设置id表头
     id = db.Column(db.Integer, primary_key = True)
-    photoname = db.Column(db.String(64), unique=True, index=True)
+    photoname = db.Column(db.String(64), index=True)
     describe = db.Column(db.Text)
     #设定外键（有可能这个注释是错误的）
     act_id = db.Column(db.Integer, db.ForeignKey('acts.id'))
@@ -119,7 +119,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     ztm = "0"
     #获取表单
@@ -147,7 +147,7 @@ def login():
     return render_template('login.html', form=form, ztm = ztm)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
     logout_user()
     flash('You have been logged out.') 
@@ -218,23 +218,20 @@ def photoson(v):
 
 
 
-@app.route("/api/upload/", methods=['POST'])
+@app.route("/api/upload/",methods=['POST','GET'])
 def upjpg():
-
-    start_time = time.time()
+    
+    a=g.abc
     upload_file = request.files['file']
     old_file_name = upload_file.filename
     if upload_file:
-        file_path = os.path.join("C:\\Users\\lucycore\\Desktop\\tests\\server\\" + g.zczc, old_file_name)
+        file_path = os.path.join("C:\\Users\\lucycore\\Desktop\\hlby_web\\app\\static\\img\\" + a, old_file_name)
         upload_file.save(file_path)
-        print("success")
-        print('file saved to %s' % file_path)
-        duration = time.time() - start_time
-        print('duration:[%.0fms]' % (duration*1000))
+        
         return '发送完成'
     else:
         return '发送失败'
-
+    
 
 
 @app.route('/api/',methods=['POST','GET'])
@@ -242,26 +239,32 @@ def apidk():
     text=request.args.get('config')
     if text is not None:
         a = str(text)
-        b = a.split("*")
+        d = a.strip("\"")
+        b = d.split("*")
         actname = b[0]
         actms = b[1]
         actfile = b[2]
         photonamew = b[3]
 
+        sss = photonamew.split("!")
+
         aa = Act(activity=actname,describe=actms,file_wjj=actfile,hphoto=photonamew[0])
 
         db.session.add(aa)
+        js = 0
+        for x in sss:
+            js += 1
 
-        for x in photonamew:
-            ab = Potx(photoname=x,describe="无描述",role=aa)
+            exec(f"a{js} = Potx(photoname=\"{x}\",describe=\"无描述\",role=aa)")
 
-            db.session.add(ab)
-
+            exec(f"db.session.add(a{js})")
+        
         db.session.commit()
-        g.zczc = b[2]
+        g.abc = actfile
 
-    os.makedirs("C:\\Users\\lucycore\\Desktop\\server\\" + b)
-    return "hello" + text
+        os.makedirs("C:\\Users\\lucycore\\Desktop\\hlby_web\\app\\static\\img\\" + b[2])
+
+    return photonamew
 
 if __name__ == '__main__':
     app.run(debug = True)

@@ -32,7 +32,9 @@ db = SQLAlchemy(app)
 
 
 
-		   #导入登陆模块
+#数据库---------模型声明----------
+
+           #导入登陆模块
 class Users(UserMixin,db.Model):
     #用于保存用户名以及密码的模型
     __tablename__ = 'users'
@@ -64,7 +66,7 @@ class Potx(db.Model):
     __tablename__ = 'potxs'
     #设置id表头
     id = db.Column(db.Integer, primary_key = True)
-    photoname = db.Column(db.String(64), unique=True, index=True)
+    photoname = db.Column(db.String(64), index=True)
     describe = db.Column(db.Text)
     #设定外键（有可能这个注释是错误的）
     act_id = db.Column(db.Integer, db.ForeignKey('acts.id'))
@@ -72,16 +74,20 @@ class Potx(db.Model):
     def __repr__(self):
         return "%r*%r" % (self.photoname, self.describe)
 
+#数据库---------模型声明----------
+
+
 db.create_all()
 
-a = Users(username = "guest",password = "asdfgh123456")
-b = Users(username = "sosomu",password = "123456")
-c = Act(activity = "第一次校会",hphoto="1.jpg",file_wjj = "a",describe="这是我们第一次校会哈哈哈哈哈")
-g = Act(activity = "第二次校会",hphoto="5.jpg",file_wjj = "b",describe="这是我们第er次校会哈哈哈哈哈")
-d = Potx(photoname = "2.jpg",describe="这也不知道是啥",role = c)
-e = Potx(photoname = "3.jpg",describe="这也不知道是啥",role = c)
-f = Potx(photoname = "4.jpg",describe="这也不知道是啥",role = c)
-db.session.add_all([a,b,c,d,e,f,g])
+#a = Users(username = "guest",password = "asdfgh123456")
+b = Users(username = "soso",password = "123456")
+#c = Act(activity = "第一次校会",hphoto="1.jpg",file_wjj = "a",describe="这是我们第一次校会哈哈哈哈哈")
+#g = Act(activity = "第二次校会",hphoto="5.jpg",file_wjj = "b",describe="这是我们第er次校会哈哈哈哈哈")
+#d = Potx(photoname = "2.jpg",describe="这也不知道是啥",role = c)
+#e = Potx(photoname = "3.jpg",describe="这也不知道是啥",role = c)
+#f = Potx(photoname = "4.jpg",describe="这也不知道是啥",role = c)
+#db.session.add_all([a,b,c,d,e,f,g])
+db.session.add(b)
 db.session.commit()
 
 
