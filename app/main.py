@@ -221,11 +221,11 @@ def photoson(v):
 @app.route("/api/upload/",methods=['POST','GET'])
 def upjpg():
     
-    a=g.abc
     upload_file = request.files['file']
+    
     old_file_name = upload_file.filename
     if upload_file:
-        file_path = os.path.join("C:\\Users\\lucycore\\Desktop\\hlby_web\\app\\static\\img\\" + a, old_file_name)
+        file_path = os.path.join("C:\\Users\\lucycore\\Desktop\\hlby_web\\app\\static\\img\\" + lj, old_file_name)
         upload_file.save(file_path)
         
         return '发送完成'
@@ -260,7 +260,6 @@ def apidk():
             exec(f"db.session.add(a{js})")
         
         db.session.commit()
-        g.abc = actfile
 
         os.makedirs("C:\\Users\\lucycore\\Desktop\\hlby_web\\app\\static\\img\\" + b[2])
 
