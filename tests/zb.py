@@ -6,7 +6,14 @@ import requests
 
 def getfilenamelist():
 	print("正在生成图片名称列表")
-	lj = os.getcwd()
+	gzlj = os.path.realpath(__file__) 
+	gzlist = gzlj.split("/")
+	gzlist.remove("zb.py")
+	gzlist.remove("")
+	gzljx1 = "/".join(gzlist)
+	lj = "/" + gzljx1
+
+
 	newname_list = []
 	name_list = []
 
@@ -91,7 +98,7 @@ def changejpgexif(listb):
 			print("图片未检测到附加属性")
 
 
-def update_jpg(listc):
+def update_jpg(listc,lj):
 
 	for x in listc:
 		url = "http://127.0.0.1:5000/api/upload/"
@@ -101,7 +108,7 @@ def update_jpg(listc):
 		files = {'file':(s,open(x,'rb'),'image/jpg')}
 		#files = {'file':(s,open(r"C:\Users\lucycore\Desktop\IMG_0810.JPG",'rb'),'image/jpg')}
 
-		r = requests.post(url,files = files)
+		r = requests.post(url,files = files,lj = lj)
 		result = r.text
 		print(result)
 
@@ -121,10 +128,10 @@ def apiput():
 	hostsend = "http://127.0.0.1:5000/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
 
 
-	response = requests.post(hostsend)
+	response = requests.get(hostsend)
 
 
-	update_jpg(b)
+	update_jpg(b,actfil)
 
 
 
