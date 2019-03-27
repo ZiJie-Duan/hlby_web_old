@@ -81,6 +81,7 @@ db.create_all()
 
 #a = Users(username = "guest",password = "asdfgh123456")
 b = Users(username = "soso",password = "123456")
+c = Users(username = "guest",password = "asdfgh123456")
 #c = Act(activity = "第一次校会",hphoto="1.jpg",file_wjj = "a",describe="这是我们第一次校会哈哈哈哈哈")
 #g = Act(activity = "第二次校会",hphoto="5.jpg",file_wjj = "b",describe="这是我们第er次校会哈哈哈哈哈")
 #d = Potx(photoname = "2.jpg",describe="这也不知道是啥",role = c)
@@ -88,6 +89,7 @@ b = Users(username = "soso",password = "123456")
 #f = Potx(photoname = "4.jpg",describe="这也不知道是啥",role = c)
 #db.session.add_all([a,b,c,d,e,f,g])
 db.session.add(b)
+db.session.add(c)
 db.session.commit()
 
 

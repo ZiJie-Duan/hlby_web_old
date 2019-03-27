@@ -178,7 +178,7 @@ def photo():
     jsjs = 0
     for x in z_list:
 
-        lj = "/static/img/" + x[3] + "/" + x[1]
+        lj = "/static/img/" + x[1]
         z_list[jsjs][1] = lj
         jsjs += 1
 
@@ -210,7 +210,7 @@ def photoson(v):
     jsjs = 0
     for x in z_list:
 
-        lj = "/static/img/" + v + "/" + x[0]
+        lj = "/static/img/" + x[0]
         z_list[jsjs][0] = lj
         jsjs += 1
 
@@ -221,12 +221,11 @@ def photoson(v):
 @app.route("/api/upload/",methods=['POST','GET'])
 def upjpg():
 
-    lj = request.form["lj"]
     upload_file = request.files['file']
     
     old_file_name = upload_file.filename
     if upload_file:
-        file_path = os.path.join("/Users/lucy/Desktop/hlby_web/app/static/img/" + lj, old_file_name)
+        file_path = os.path.join("/Users/lucy/Desktop/hlby_web/app/static/img/", old_file_name)
         upload_file.save(file_path)
         
         return '发送完成'
@@ -246,10 +245,10 @@ def apidk():
         actms = b[1]
         actfile = b[2]
         photonamew = b[3]
-
+        
         sss = photonamew.split("!")
 
-        aa = Act(activity=actname,describe=actms,file_wjj=actfile,hphoto=photonamew[0])
+        aa = Act(activity=actname,describe=actms,file_wjj=actfile,hphoto=sss[0])
 
         db.session.add(aa)
         js = 0
@@ -262,9 +261,8 @@ def apidk():
         
         db.session.commit()
 
-        os.makedirs("/Users/lucy/Desktop/hlby_web/app/static/img/" + b[2])
-
-    return photonamew
+        
+    return str(sss)
 
 if __name__ == '__main__':
     app.run(debug = True)

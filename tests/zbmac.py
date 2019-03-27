@@ -8,7 +8,7 @@ def getfilenamelist():
 	print("正在生成图片名称列表")
 	gzlj = os.path.realpath(__file__) 
 	gzlist = gzlj.split("/")
-	gzlist.remove("zb.py")
+	gzlist.remove("zbmac.py")
 	gzlist.remove("")
 	gzljx1 = "/".join(gzlist)
 	lj = "/" + gzljx1
@@ -27,11 +27,11 @@ def getfilenamelist():
 		if x == "zb.py":
 			print("去除程序本体在列表中")
 		else:
-			a = lj + "\\" + x
+			a = lj + "/" + x
 			listzc1.append(a)
 
 			uid = str(uuid.uuid4())
-			b = lj + "\\" + uid + ".jpg"
+			b = lj + "/" + uid + ".jpg"
 			listzc1.append(b)
 			uidx = uid + ".jpg"
 			newname_list.append(uidx)
@@ -98,17 +98,17 @@ def changejpgexif(listb):
 			print("图片未检测到附加属性")
 
 
-def update_jpg(listc,lj):
+def update_jpg(listc):
 
 	for x in listc:
 		url = "http://127.0.0.1:5000/api/upload/"
-		newname = x.split('\\')
+		newname = x.split('/')
 		s = newname[len(newname)-1]
 
 		files = {'file':(s,open(x,'rb'),'image/jpg')}
 		#files = {'file':(s,open(r"C:\Users\lucycore\Desktop\IMG_0810.JPG",'rb'),'image/jpg')}
 
-		r = requests.post(url,files = files,date = lj)
+		r = requests.post(url,files = files)
 		result = r.text
 		print(result)
 
@@ -131,7 +131,7 @@ def apiput():
 	response = requests.get(hostsend)
 
 
-	update_jpg(b,actfil)
+	update_jpg(b)
 
 
 
