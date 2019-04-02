@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, session, redirect, url_for, flash
+from flask import Flask, render_template, session, redirect, url_for, flash,request, g
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
@@ -17,6 +17,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 #初始化数据库设置
 app.config['SECRET_KEY'] = 'hard to guess string'
+app.config['JSON_AS_ASCII'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -66,7 +67,7 @@ class Potx(db.Model):
     __tablename__ = 'potxs'
     #设置id表头
     id = db.Column(db.Integer, primary_key = True)
-    photoname = db.Column(db.String(64), unique=True, index=True)
+    photoname = db.Column(db.String(64), index=True)
     describe = db.Column(db.Text)
     #设定外键（有可能这个注释是错误的）
     act_id = db.Column(db.Integer, db.ForeignKey('acts.id'))
@@ -118,7 +119,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     ztm = "0"
     #获取表单
@@ -146,7 +147,7 @@ def login():
     return render_template('login.html', form=form, ztm = ztm)
 
 
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
     logout_user()
     flash('You have been logged out.') 
@@ -177,7 +178,7 @@ def photo():
     jsjs = 0
     for x in z_list:
 
-        lj = "/static/img/" + x[3] + "/" + x[1]
+        lj = "/static/img/" + x[1]
         z_list[jsjs][1] = lj
         jsjs += 1
 
@@ -209,13 +210,59 @@ def photoson(v):
     jsjs = 0
     for x in z_list:
 
-        lj = "/static/img/" + v + "/" + x[0]
+        lj = "/static/img/" + x[0]
         z_list[jsjs][0] = lj
         jsjs += 1
 
     return render_template('photoson.html',lista = z_list)
 
 
+
+@app.route("/api/upload/",methods=['POST','GET'])
+def upjpg():
+
+    upload_file = request.files['file']
+    
+    old_file_name = upload_file.filename
+    if upload_file:
+        file_path = os.path.join("/Users/lucy/Desktop/hlby_web/app/static/img/", old_file_name)
+        upload_file.save(file_path)
+        
+        return '发送完成'
+    else:
+        return '发送失败'
+    
+
+
+@app.route('/api/',methods=['POST','GET'])
+def apidk():
+    text=request.args.get('config')
+    if text is not None:
+        a = str(text)
+        d = a.strip("\"")
+        b = d.split("*")
+        actname = b[0]
+        actms = b[1]
+        actfile = b[2]
+        photonamew = b[3]
+        
+        sss = photonamew.split("!")
+
+        aa = Act(activity=actname,describe=actms,file_wjj=actfile,hphoto=sss[0])
+
+        db.session.add(aa)
+        js = 0
+        for x in sss:
+            js += 1
+
+            exec(f"a{js} = Potx(photoname=\"{x}\",describe=\"无描述\",role=aa)")
+
+            exec(f"db.session.add(a{js})")
+        
+        db.session.commit()
+
+        
+    return str(sss)
 
 if __name__ == '__main__':
     app.run(debug = True)
