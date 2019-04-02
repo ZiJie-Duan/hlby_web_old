@@ -225,7 +225,7 @@ def upjpg():
     
     old_file_name = upload_file.filename
     if upload_file:
-        file_path = os.path.join("/zzz/hlby_web/app/static/img/", old_file_name)
+        file_path = os.path.join("/static/img/", old_file_name)
         upload_file.save(file_path)
         
         return '发送完成'
