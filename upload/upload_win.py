@@ -4,6 +4,7 @@ import piexif
 from PIL import Image
 import requests
 
+
 def getfilenamelist():
 	print("正在生成图片名称列表")
 	gzlj = os.path.realpath(__file__) 
@@ -27,17 +28,20 @@ def getfilenamelist():
 		if x == "upload_win.py":
 			print("去除程序本体在列表中")
 		else:
-			a = lj + "\\" + x
-			listzc1.append(a)
+			if x == "zs.cer":
+				print("去除ssl证书在列表中")
+			else:
+				a = lj + "\\" + x
+				listzc1.append(a)
 
-			uid = str(uuid.uuid4())
-			b = lj + "\\" + uid + ".jpg"
-			listzc1.append(b)
-			uidx = uid + ".jpg"
-			newname_list.append(uidx)
+				uid = str(uuid.uuid4())
+				b = lj + "\\" + uid + ".jpg"
+				listzc1.append(b)
+				uidx = uid + ".jpg"
+				newname_list.append(uidx)
 
-			rename_list.append(listzc1)
-			listzc1 = []
+				rename_list.append(listzc1)
+				listzc1 = []
 
 	return rename_list, newname_list
 
@@ -101,14 +105,14 @@ def changejpgexif(listb):
 def update_jpg(listc):
 
 	for x in listc:
-		url = "https://peaceful-stock-231110.appspot.com/api/upload/"
+		url = "https://haileybury.top/api/upload/"
 		newname = x.split('\\')
 		s = newname[len(newname)-1]
 
 		files = {'file':(s,open(x,'rb'),'image/jpg')}
 		#files = {'file':(s,open(r"C:\Users\lucycore\Desktop\IMG_0810.JPG",'rb'),'image/jpg')}
 
-		r = requests.post(url,files = files)
+		r = requests.post(url,files = files, verify=False)
 		result = r.text
 		print(result)
 
@@ -125,17 +129,16 @@ def apiput():
 
 	wnln = "!".join(wnl)
 
-	hostsend = "https://peaceful-stock-231110.appspot.com/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
+	hostsend = "https://haileybury.top/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
 
+	response = requests.get(hostsend, verify=False)
 
-	response = requests.get(hostsend)
-
-
-	update_jpg(b,actfil)
+	
+	update_jpg(b)
 
 
 
 apiput()
-
+print("程序运行完成！")
 input()
 #os.rename()
