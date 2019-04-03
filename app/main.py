@@ -265,5 +265,5 @@ def apidk():
     return str(sss)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug = True,port=80)
+    app.run(host='0.0.0.0',debug = True,port=80,ssl_context=("fullchain.pem","privkey.pem"))
 
