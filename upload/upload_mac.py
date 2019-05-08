@@ -101,14 +101,14 @@ def changejpgexif(listb):
 def update_jpg(listc):
 
 	for x in listc:
-		url = "http://127.0.0.1:5000/api/upload/"
-		newname = x.split('/')
+		url = "https://haileybury.top/api/upload/"
+		newname = x.split('\\')
 		s = newname[len(newname)-1]
 
 		files = {'file':(s,open(x,'rb'),'image/jpg')}
 		#files = {'file':(s,open(r"C:\Users\lucycore\Desktop\IMG_0810.JPG",'rb'),'image/jpg')}
 
-		r = requests.post(url,files = files)
+		r = requests.post(url,files = files, verify=False)
 		result = r.text
 		print(result)
 
@@ -117,7 +117,7 @@ def apiput():
 
 	actname = input("活动名称：")
 	actms = input("活动描述：")
-	actfil = input("活动文件夹：")
+	actfil = input("uuid(随机标记符):")
 
 	a, wnl = getfilenamelist()
 	b = renamefile(a)
@@ -125,17 +125,16 @@ def apiput():
 
 	wnln = "!".join(wnl)
 
-	hostsend = "http://127.0.0.1:5000/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
+	hostsend = "https://haileybury.top/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
 
+	response = requests.get(hostsend, verify=False)
 
-	response = requests.get(hostsend)
-
-
+	
 	update_jpg(b)
 
 
 
 apiput()
-
+print("程序运行完成！")
 input()
 #os.rename()

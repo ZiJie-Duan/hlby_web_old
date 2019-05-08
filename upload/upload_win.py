@@ -9,7 +9,7 @@ def getfilenamelist():
 	print("正在生成图片名称列表")
 	gzlj = os.path.realpath(__file__) 
 	gzlist = gzlj.split("\\")
-	gzlist.remove("upload_win.py")
+	gzlist.remove("upload.exe")
 	#gzlist.remove("")
 	gzljx1 = "\\".join(gzlist)
 	lj = gzljx1
@@ -25,23 +25,21 @@ def getfilenamelist():
 	listzc1 = []
 
 	for x in name_list:
-		if x == "upload_win.py":
+		if x == "upload.exe":
 			print("去除程序本体在列表中")
 		else:
-			if x == "zs.cer":
-				print("去除ssl证书在列表中")
-			else:
-				a = lj + "\\" + x
-				listzc1.append(a)
+			
+			a = lj + "\\" + x
+			listzc1.append(a)
 
-				uid = str(uuid.uuid4())
-				b = lj + "\\" + uid + ".jpg"
-				listzc1.append(b)
-				uidx = uid + ".jpg"
-				newname_list.append(uidx)
+			uid = str(uuid.uuid4())
+			b = lj + "\\" + uid + ".jpg"
+			listzc1.append(b)
+			uidx = uid + ".jpg"
+			newname_list.append(uidx)
 
-				rename_list.append(listzc1)
-				listzc1 = []
+			rename_list.append(listzc1)
+			listzc1 = []
 
 	return rename_list, newname_list
 
@@ -121,7 +119,7 @@ def apiput():
 
 	actname = input("活动名称：")
 	actms = input("活动描述：")
-	actfil = input("活动文件夹：")
+	actfil = input("uuid(随机标记符):")
 
 	a, wnl = getfilenamelist()
 	b = renamefile(a)

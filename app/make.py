@@ -80,7 +80,7 @@ class Potx(db.Model):
 db.create_all()
 
 #a = Users(username = "guest",password = "asdfgh123456")
-b = Users(username = "soso",password = "123456")
+b = Users(username = "haileybury",password = "haileytianjin")
 c = Users(username = "guest",password = "asdfgh123456")
 #c = Act(activity = "第一次校会",hphoto="1.jpg",file_wjj = "a",describe="这是我们第一次校会哈哈哈哈哈")
 #g = Act(activity = "第二次校会",hphoto="5.jpg",file_wjj = "b",describe="这是我们第er次校会哈哈哈哈哈")
