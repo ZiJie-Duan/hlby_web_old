@@ -269,15 +269,18 @@ def apidk():
 def apidel():
     text=request.args.get('f')
     if text is not None:
-        d.split("*")
+        text = text.split("!")
 
-        aa = Act.query.filter_by(file_wjj=text).first()
-        db.session.delete(aa)
-        
-        db.session.commit()
+        if text[0] == "qaswazxs":
+
+            aa = Act.query.filter_by(file_wjj=text[1]).first()
+            db.session.delete(aa)            
+            db.session.commit()
+        else:
+            return <p>口令错误！</p>
 
         
-    return "删除完成！"
+    return <p>删除完成！</p>
 
 
 if __name__ == '__main__':
