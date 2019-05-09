@@ -277,10 +277,10 @@ def apidel():
             db.session.delete(aa)            
             db.session.commit()
         else:
-            return <p>口令错误！</p>
+            return "口令错误！"
 
         
-    return <p>删除完成！</p>
+    return "删除完成!"
 
 
 if __name__ == '__main__':
