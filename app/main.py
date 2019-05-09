@@ -266,7 +266,7 @@ def apidk():
 
 
 @app.route('/api/del/',methods=['POST','GET'])
-def apidk():
+def apidel():
     text=request.args.get('f')
     if text is not None:
         d.split("*")
