@@ -128,13 +128,13 @@ def login():
     if form.validate_on_submit():
         #从数据库获取密码
         userpawd = Users.query.filter_by(username=form.username.data).first()
-        #进行密码格式转换
-        try:
-            userpawd_cl = str(userpawd).strip("\'") 
-        except:
-            userpawd_cl = "0"
+
         #判断是否符合要求
         if userpawd is not None:
+
+            #进行密码格式转换
+            userpawd_cl = str(userpawd).strip("\'") 
+
             if userpawd_cl == form.password.data:
                 login_user(userpawd,False)
                 #直接转跳入photo页面
@@ -263,6 +263,22 @@ def apidk():
 
         
     return str(sss)
+
+
+@app.route('/api/del/',methods=['POST','GET'])
+def apidk():
+    text=request.args.get('f')
+    if text is not None:
+        d.split("*")
+
+        aa = Act.query.filter_by(file_wjj=text).first()
+        db.session.delete(aa)
+        
+        db.session.commit()
+
+        
+    return "删除完成！"
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=443,ssl_context=("fullchain.pem","privkey.pem"))
