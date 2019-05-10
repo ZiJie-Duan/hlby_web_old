@@ -25,6 +25,7 @@ def getfilenamelist():
 
 	for x in name_list:
 		a = x.split('.')
+
 		if a[1] == "jpg" or a[1] == "JPG":
 
 			a = lj + "\\" + x
@@ -39,11 +40,39 @@ def getfilenamelist():
 			rename_list.append(listzc1)
 			listzc1 = []
 
+		elif a[1] == "jpeg" or a[1] == "JPEG":
+
+			a = lj + "\\" + x
+			listzc1.append(a)
+
+			uid = str(uuid.uuid4())
+			b = lj + "\\" + uid + ".jpeg"
+			listzc1.append(b)
+			uidx = uid + ".jpeg"
+			newname_list.append(uidx)
+
+			rename_list.append(listzc1)
+			listzc1 = []
+
+		elif a[1] == "png" or a[1] == "PNG":
+
+			a = lj + "\\" + x
+			listzc1.append(a)
+
+			uid = str(uuid.uuid4())
+			b = lj + "\\" + uid + ".png"
+			listzc1.append(b)
+			uidx = uid + ".png"
+			newname_list.append(uidx)
+
+			rename_list.append(listzc1)
+			listzc1 = []
+
+		elif x == "upload.py":
+			print("去除程序本体在列表中")
+
 		else:
-			if x == "upload.py":
-				print("去除程序本体在列表中")
-			else:
-				print("已检测到非jpg照片文件：" + x)
+			print("已检测到非照片文件：" + x)
 
 							
 
@@ -109,7 +138,7 @@ def changejpgexif(listb):
 def update_jpg(listc):
 
 	for x in listc:
-		url = "https://haileybury.top/api/upload/"
+		url = "http://haileybury.top/api/upload/"
 		newname = x.split('\\')
 		s = newname[len(newname)-1]
 
@@ -137,7 +166,7 @@ def send_get_h(data):
 
 	while js < 3 :
 		try:
-			response = requests.get(hostsend, verify=False)
+			response = requests.get(data, timeout=5)
 			print("申请get方式发送完成！")
 			js = 4
 		except:
@@ -158,7 +187,7 @@ def apiput():
 
 	wnln = "!".join(wnl)
 
-	hostsend = "https://haileybury.top/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
+	hostsend = "http://haileybury.top/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
 	
 	input("\n\n\n本地图像处理已完成 按下回车后开始上传！")
 	
@@ -173,8 +202,11 @@ def main():
 	input("按下回车后启动！")
 	apiput()
 	print("程序运行完成！")
-	input()
+
+	while True:
+		a = input("输入字母'q'然后按下回车退出！")
+		if a == "q":
+			break	
+
 	#os.rename()
-
-
 main()
