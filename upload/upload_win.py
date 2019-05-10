@@ -4,12 +4,11 @@ import piexif
 from PIL import Image
 import requests
 
-
 def getfilenamelist():
 	print("正在生成图片名称列表")
 	gzlj = os.path.realpath(__file__) 
 	gzlist = gzlj.split("\\")
-	gzlist.remove("upload.exe")
+	gzlist.remove("upload.py")
 	#gzlist.remove("")
 	gzljx1 = "\\".join(gzlist)
 	lj = gzljx1
@@ -25,10 +24,9 @@ def getfilenamelist():
 	listzc1 = []
 
 	for x in name_list:
-		if x == "upload.exe":
-			print("去除程序本体在列表中")
-		else:
-			
+		a = x.split('.')
+		if a[1] == "jpg" or a[1] == "JPG":
+
 			a = lj + "\\" + x
 			listzc1.append(a)
 
@@ -40,6 +38,14 @@ def getfilenamelist():
 
 			rename_list.append(listzc1)
 			listzc1 = []
+
+		else:
+			if x == "upload.py":
+				print("去除程序本体在列表中")
+			else:
+				print("已检测到非jpg照片文件：" + x)
+
+							
 
 	return rename_list, newname_list
 
@@ -92,7 +98,7 @@ def changejpgexif(listb):
 				if zc == 8:
 					im = im.transpose(Image.ROTATE_90)
 
-				im.save(x, exif=bit,quality=95)
+				im.save(x, exif=bit,quality=80)
 		except:
 			print("图片未检测到附加属性")
 
@@ -109,10 +115,35 @@ def update_jpg(listc):
 
 		files = {'file':(s,open(x,'rb'),'image/jpg')}
 		#files = {'file':(s,open(r"C:\Users\lucycore\Desktop\IMG_0810.JPG",'rb'),'image/jpg')}
+		
+		print("照片%r信息处理完成！" %(x))
+		js = 0
 
-		r = requests.post(url,files = files, verify=False)
-		result = r.text
-		print(result)
+		while js < 3:
+			try:
+				#r = requests.post(url,files = files, verify=False, timeout=5)
+				r = requests.post(url,files = files, timeout=5)
+				result = r.text
+				print("照片%r传输完成！" %(x))
+				js = 4
+			except:
+				js += 1
+				print("照片传输超时！正在重连(%r/3)" %(str(js)))
+
+
+def send_get_h(data):
+
+	js = 0
+
+	while js < 3 :
+		try:
+			response = requests.get(hostsend, verify=False)
+			print("申请get方式发送完成！")
+			js = 4
+		except:
+			js += 1
+			print("传输超时！正在重连(%r/3)" %(str(js)))
+
 
 
 def apiput():
@@ -128,15 +159,22 @@ def apiput():
 	wnln = "!".join(wnl)
 
 	hostsend = "https://haileybury.top/api/?config=" + actname + "*" + actms + "*" + actfil + "*" + wnln
-
-	response = requests.get(hostsend, verify=False)
-
+	
+	input("\n\n\n本地图像处理已完成 按下回车后开始上传！")
+	
+	send_get_h(hostsend)
 	
 	update_jpg(b)
 
 
+def main():
+	
+	print("haileybury 照片墙传输程序")
+	input("按下回车后启动！")
+	apiput()
+	print("程序运行完成！")
+	input()
+	#os.rename()
 
-apiput()
-print("程序运行完成！")
-input()
-#os.rename()
+
+main()
